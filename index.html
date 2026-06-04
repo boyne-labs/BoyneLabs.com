@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boyne Labs — Construction Technology Consultancy</title>
+<meta name="description" content="We've been on both sides of the table. Construction technology consultancy led by John Naughton.">
+<meta property="og:title" content="Boyne Labs">
+<meta property="og:description" content="We've been on both sides of the table. Twenty years across construction and tech.">
+<meta property="og:url" content="https://boynelabs.com">
+<link rel="icon" type="image/png" href="Favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,700&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #00BF63;
+    --green-dark: #009e52;
+    --green-dim: rgba(0,191,99,0.10);
+    --charcoal: #2D2D2D;
+    --surface: #333333;
+    --surface-2: #3a3a3a;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255,255,255,0.62);
+    --text-tertiary: rgba(255,255,255,0.32);
+    --border: rgba(255,255,255,0.08);
+    --border-hover: rgba(255,255,255,0.16);
+    --radius: 14px;
+    --radius-pill: 999px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--charcoal);
+    color: var(--text-primary);
+    font-family: 'Barlow', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(45,45,45,0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 0 5%;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  /* Wordmark — chunky white BOYNE LABS */
+  .nav-wordmark {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    gap: 3px;
+  }
+  .nav-wordmark-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    line-height: 1;
+  }
+  .nav-wordmark-text .labs-dots {
+    display: inline-flex;
+    gap: 3px;
+    align-items: center;
+    vertical-align: middle;
+    margin-left: 6px;
+    position: relative;
+    top: -2px;
+  }
+  .nav-wordmark-text .labs-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    display: inline-block;
+  }
+  .nav-wordmark-tagline {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text-primary); }
+  .nav-links a.active { color: var(--green); }
+
+  /* ── CONTACT DROPDOWN ── */
+  .nav-contact {
+    position: relative;
+  }
+  .nav-contact-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.2s;
+  }
+  .nav-contact-btn:hover { color: var(--text-primary); }
+  .nav-contact-btn.open { color: var(--text-primary); }
+  .nav-contact-chevron {
+    width: 10px;
+    height: 10px;
+    transition: transform 0.2s;
+    opacity: 0.5;
+  }
+  .nav-contact-btn.open .nav-contact-chevron { transform: rotate(180deg); opacity: 1; }
+  .nav-contact-dropdown {
+    position: absolute;
+    top: calc(100% + 14px);
+    right: 0;
+    background: #222;
+    border: 1px solid var(--border-hover);
+    border-radius: 10px;
+    padding: 6px;
+    min-width: 220px;
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    z-index: 200;
+  }
+  .nav-contact-dropdown.open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+  }
+  .nav-contact-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 7px;
+    color: var(--text-primary) !important;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-transform: none !important;
+    transition: background 0.15s;
+  }
+  .nav-contact-dropdown a:hover { background: rgba(255,255,255,0.07); }
+  .nav-contact-dropdown a svg { opacity: 0.45; flex-shrink: 0; }
+
+  /* ── MAIN ── */
+  main { flex: 1; display: flex; flex-direction: column; }
+
+  /* ── HERO ── */
+  .hero {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 90px 5% 80px;
+    width: 100%;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 64px;
+    align-items: center;
+    width: 100%;
+  }
+
+  /* Left: text */
+  .hero-statement {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(52px, 7vw, 88px);
+    line-height: 0.93;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+  }
+  .hero-statement .line-2 {
+    color: var(--green);
+    font-style: italic;
+    display: block;
+  }
+  .hero-statement .line-3 { display: block; }
+
+  .hero-rule {
+    width: 48px; height: 3px;
+    background: var(--green);
+    border-radius: 2px;
+    margin-bottom: 32px;
+  }
+  .hero-body {
+    font-size: clamp(16px, 2vw, 19px);
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 40px;
+    max-width: 540px;
+  }
+  .hero-body strong { color: var(--text-primary); font-weight: 700; }
+
+  .creds {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 48px;
+  }
+  .cred-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    letter-spacing: 0.04em;
+    background: var(--surface);
+    white-space: nowrap;
+  }
+  .cred-pill::before {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--green);
+    flex-shrink: 0;
+  }
+
+  .contact-line {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .contact-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .contact-email {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 700;
+    transition: color 0.2s;
+    border-bottom: 1.5px solid var(--border-hover);
+    padding-bottom: 2px;
+  }
+  .contact-email:hover { color: var(--green); border-color: var(--green); }
+  .contact-email svg { opacity: 0.5; }
+
+  /* Right: Boyne Labs logo image */
+  .hero-logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-logo-wrap img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    display: block;
+    border-radius: 24px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 5%;
+  }
+  .footer-inner {
+    max-width: 1040px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .footer-copy { font-size: 12px; color: var(--text-tertiary); }
+  .footer-copy a { color: var(--text-secondary); text-decoration: none; }
+  .footer-copy a:hover { color: var(--green); }
+  .footer-dots { display: flex; gap: 4px; align-items: center; }
+  .footer-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    opacity: 0.45;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 760px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .hero-logo-wrap { order: -1; }
+    .hero-logo-wrap img { max-width: 200px; margin: 0 auto; }
+    .hero { padding-top: 56px; padding-bottom: 56px; }
+    .hero-statement { font-size: 52px; }
+    .nav-links .hide-mob { display: none; }
+  }
+
+  /* ── ENTRANCE ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-statement { animation: fadeUp 0.6s ease both 0.05s; }
+  .hero-rule      { animation: fadeUp 0.5s ease both 0.25s; }
+  .hero-body      { animation: fadeUp 0.5s ease both 0.35s; }
+  .creds          { animation: fadeUp 0.5s ease both 0.45s; }
+  .contact-line   { animation: fadeUp 0.5s ease both 0.55s; }
+  .hero-logo-wrap { animation: fadeUp 0.7s ease both 0.15s; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-wordmark">
+      <span class="nav-wordmark-text">
+        BOYNE LABS
+        <span class="labs-dots">
+          <span class="labs-dot"></span>
+          <span class="labs-dot"></span>
+          <span class="labs-dot"></span>
+          <span class="labs-dot"></span>
+        </span>
+      </span>
+      <span class="nav-wordmark-tagline">The right technology track</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="podcast.html">Podcast</a></li>
+      <li class="hide-mob nav-contact">
+        <button class="nav-contact-btn" id="contact-btn" aria-expanded="false">
+          Contact
+          <svg class="nav-contact-chevron" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="2,3 5,7 8,3"/></svg>
+        </button>
+        <div class="nav-contact-dropdown" id="contact-dropdown">
+          <a href="mailto:hello@boynelabs.com">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            hello@boynelabs.com
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <div class="hero">
+    <div class="hero-grid">
+
+      <!-- LEFT: copy -->
+      <div>
+        <div class="hero-statement">
+          We've been on<br>
+          <span class="line-2">both sides</span>
+          <span class="line-3">of the table.</span>
+        </div>
+
+        <div class="hero-rule"></div>
+
+        <p class="hero-body">
+          Twenty years across construction and tech means we know what <strong>builders actually need</strong> — and what it takes for <strong>tech companies to earn their trust</strong>. Led by John Naughton, former CEO of GoContractor, former Head of On-Machine Products at Trimble, current Board Member at Presien.
+        </p>
+
+        <div class="creds">
+          <span class="cred-pill">CEO — GoContractor (acquired)</span>
+          <span class="cred-pill">On-Machine Products — Trimble</span>
+          <span class="cred-pill">Board Member — Presien</span>
+          <span class="cred-pill">Brisbane, AU</span>
+        </div>
+
+        <div class="contact-line">
+          <span class="contact-label">Get in touch</span>
+          <a href="mailto:hello@boynelabs.com" class="contact-email">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            hello@boynelabs.com
+          </a>
+        </div>
+      </div>
+
+      <!-- RIGHT: Boyne Labs logo -->
+      <div class="hero-logo-wrap">
+        <img src="Boyne_Labs_Dark_Logo_w_tagline.png" alt="Boyne Labs">
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p class="footer-copy">© <span id="yr"></span> Boyne Labs · <a href="https://boynelabs.com">boynelabs.com</a> · Brisbane, AU</p>
+    <div class="footer-dots">
+      <div class="footer-dot"></div>
+      <div class="footer-dot"></div>
+      <div class="footer-dot"></div>
+      <div class="footer-dot"></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+const contactBtn = document.getElementById('contact-btn');
+const contactDd  = document.getElementById('contact-dropdown');
+contactBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const open = contactDd.classList.toggle('open');
+  contactBtn.classList.toggle('open', open);
+  contactBtn.setAttribute('aria-expanded', open);
+});
+document.addEventListener('click', () => {
+  contactDd.classList.remove('open');
+  contactBtn.classList.remove('open');
+  contactBtn.setAttribute('aria-expanded', false);
+});
+</script>
+</body>
+</html>

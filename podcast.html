@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wired & Hammered — Construction, Buildings & Mining Technology</title>
+<meta name="description" content="A podcast about construction, buildings and mining technology. Hosted by John Naughton.">
+<meta property="og:title" content="Wired & Hammered Podcast">
+<meta property="og:description" content="Construction, buildings and mining technology. Straight talk from the people building the future.">
+<meta property="og:url" content="https://boynelabs.com/podcast">
+<meta property="og:image" content="Wired___Hammered_logo_white.png">
+<link rel="icon" type="image/png" href="Favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #00BF63;
+    --green-dark: #009e52;
+    --green-dim: rgba(0,191,99,0.10);
+    --charcoal: #2D2D2D;
+    --surface: #333333;
+    --surface-2: #3a3a3a;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255,255,255,0.62);
+    --text-tertiary: rgba(255,255,255,0.32);
+    --border: rgba(255,255,255,0.08);
+    --border-hover: rgba(255,255,255,0.16);
+    --radius: 14px;
+    --radius-pill: 999px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--charcoal);
+    color: var(--text-primary);
+    font-family: 'Barlow', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── SHARED NAV (identical to index) ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(45,45,45,0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1040px; margin: 0 auto; padding: 0 5%;
+    height: 68px; display: flex; align-items: center;
+    justify-content: space-between; gap: 24px;
+  }
+  .nav-wordmark {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    gap: 3px;
+  }
+  .nav-wordmark-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    line-height: 1;
+  }
+  .nav-wordmark-text .labs-dots {
+    display: inline-flex;
+    gap: 3px;
+    align-items: center;
+    vertical-align: middle;
+    margin-left: 6px;
+    position: relative;
+    top: -2px;
+  }
+  .nav-wordmark-text .labs-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    display: inline-block;
+  }
+  .nav-wordmark-tagline {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+  .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+  .nav-links a {
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text-primary); }
+  .nav-links a.active { color: var(--green); }
+  @keyframes blink {
+    0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.65)}
+  }
+
+  /* ── HERO ── */
+  .hero-wrap {
+    max-width: 1040px; margin: 0 auto;
+    padding: 64px 5% 52px;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 56px;
+    align-items: center;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--green-dim);
+    border: 1px solid rgba(0,191,99,0.2);
+    border-radius: var(--radius-pill);
+    padding: 5px 13px;
+    font-size: 11px; font-weight: 700;
+    color: var(--green); letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 20px;
+  }
+  .eyebrow-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green); animation: blink 2s infinite;
+  }
+  .hero-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(52px, 6.5vw, 82px);
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .hero-title .amp { color: var(--green); font-style: italic; }
+  .hero-sub {
+    font-size: 17px; color: var(--text-secondary);
+    line-height: 1.65; margin-bottom: 32px; max-width: 440px;
+  }
+  .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--green); color: #fff; text-decoration: none;
+    font-weight: 700; font-size: 14px; padding: 12px 24px;
+    border-radius: var(--radius-pill);
+    transition: background 0.2s, transform 0.15s; letter-spacing: 0.02em;
+  }
+  .btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--text-primary); text-decoration: none;
+    font-weight: 600; font-size: 14px; padding: 12px 22px;
+    border-radius: var(--radius-pill); border: 1px solid var(--border-hover);
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--green); color: var(--green); transform: translateY(-1px); }
+
+  /* ── COVER ART ── */
+  .cover-art {
+    width: 100%; max-width: 340px; aspect-ratio: 1;
+    border-radius: 22px; background: #1a1a1a;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .cover-art::before {
+    content: ''; position: absolute;
+    width: 55%; height: 55%; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,191,99,0.16) 0%, transparent 70%);
+    top: 44%; left: 50%; transform: translate(-50%, -55%);
+  }
+  .cover-logo {
+    width: 76%; height: 76%; object-fit: contain;
+    position: relative; z-index: 1;
+    transition: transform 0.4s ease;
+  }
+  .cover-art:hover .cover-logo { transform: scale(1.03); }
+  .cover-badge {
+    position: absolute; bottom: 16px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--green); color: #fff;
+    font-size: 9px; font-weight: 800;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 5px 13px; border-radius: var(--radius-pill);
+    white-space: nowrap; z-index: 2;
+  }
+
+  /* ── PLATFORM STRIP ── */
+  .platforms-wrap {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 5%;
+  }
+  .platforms-inner {
+    max-width: 1040px; margin: 0 auto;
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .platforms-label {
+    font-size: 11px; font-weight: 700; color: var(--text-tertiary);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-right: 4px; white-space: nowrap;
+  }
+  .platform-pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 13px; font-weight: 600; padding: 6px 14px;
+    border-radius: var(--radius-pill); border: 1px solid var(--border);
+    transition: all 0.2s; white-space: nowrap;
+  }
+  .platform-pill:hover { border-color: var(--green); color: var(--green); }
+  .picon { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+  .pi-spot   { background: #1DB954; }
+  .pi-apple  { background: #872EC4; }
+  .pi-pocket { background: #EF3F56; }
+  .pi-rss    { background: var(--green); }
+
+  /* ── CONTACT DROPDOWN ── */
+  .nav-contact { position: relative; }
+  .nav-contact-btn {
+    background: none; border: none;
+    color: var(--text-secondary);
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    cursor: pointer; padding: 0;
+    display: flex; align-items: center; gap: 5px;
+    transition: color 0.2s;
+  }
+  .nav-contact-btn:hover { color: var(--text-primary); }
+  .nav-contact-btn.open { color: var(--text-primary); }
+  .nav-contact-chevron { width: 10px; height: 10px; transition: transform 0.2s; opacity: 0.5; }
+  .nav-contact-btn.open .nav-contact-chevron { transform: rotate(180deg); opacity: 1; }
+  .nav-contact-dropdown {
+    position: absolute; top: calc(100% + 14px); right: 0;
+    background: #222; border: 1px solid var(--border-hover);
+    border-radius: 10px; padding: 6px; min-width: 220px;
+    opacity: 0; transform: translateY(-6px);
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    z-index: 200;
+  }
+  .nav-contact-dropdown.open { opacity: 1; transform: translateY(0); pointer-events: all; }
+  .nav-contact-dropdown a {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; border-radius: 7px;
+    color: var(--text-primary) !important; text-decoration: none;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 0.01em; text-transform: none !important;
+    transition: background 0.15s;
+  }
+  .nav-contact-dropdown a:hover { background: rgba(255,255,255,0.07); }
+  .nav-contact-dropdown a svg { opacity: 0.45; flex-shrink: 0; }
+
+  /* ── SECTION ── */
+  .section {
+    max-width: 1040px; margin: 0 auto; padding: 52px 5%;
+  }
+  .section-hd {
+    display: flex; align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 24px; gap: 16px; flex-wrap: wrap;
+  }
+  h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 28px;
+    text-transform: uppercase; letter-spacing: 0.03em;
+  }
+  .see-all {
+    font-size: 12px; font-weight: 700; color: var(--green);
+    text-decoration: none; letter-spacing: 0.06em;
+    text-transform: uppercase; transition: opacity 0.2s;
+  }
+  .see-all:hover { opacity: 0.7; }
+
+  /* ── EPISODE CARDS ── */
+  #episodes-list { display: flex; flex-direction: column; gap: 3px; }
+  .ep-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px 20px;
+    display: grid; grid-template-columns: 48px 1fr 46px;
+    gap: 14px; align-items: center;
+    transition: border-color 0.2s, background 0.2s; cursor: pointer;
+  }
+  .ep-card:hover { border-color: var(--border-hover); background: var(--surface-2); }
+  .ep-card.playing { border-color: var(--green); background: rgba(0,191,99,0.04); }
+  .ep-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 24px;
+    color: var(--text-tertiary); text-align: right; line-height: 1;
+  }
+  .ep-card.playing .ep-num { color: var(--green); }
+  .ep-body { min-width: 0; }
+  .ep-title {
+    font-weight: 700; font-size: 14px; line-height: 1.35; margin-bottom: 5px;
+    display: -webkit-box; -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .ep-meta {
+    display: flex; gap: 10px; align-items: center;
+    font-size: 11px; color: var(--text-secondary); flex-wrap: wrap;
+  }
+  .play-btn {
+    width: 42px; height: 42px; border-radius: 50%;
+    border: 1.5px solid var(--border-hover); background: transparent;
+    color: var(--text-secondary); display: flex;
+    align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s; flex-shrink: 0;
+  }
+  .play-btn:hover,
+  .ep-card.playing .play-btn {
+    border-color: var(--green); color: var(--green); background: var(--green-dim);
+  }
+  #load-more-btn {
+    display: none; width: 100%; margin-top: 14px; padding: 13px;
+    background: transparent; border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--text-secondary);
+    font-family: 'Barlow', sans-serif; font-size: 12px;
+    font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.2s;
+  }
+  #load-more-btn:hover { border-color: var(--green); color: var(--green); }
+
+  /* ── ABOUT ── */
+  .about-bg {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 300px;
+    gap: 44px; align-items: start;
+  }
+  .about-text p {
+    color: var(--text-secondary); margin-bottom: 16px;
+    font-size: 16px; line-height: 1.7;
+  }
+  .about-text p:last-child { margin-bottom: 0; }
+  .boyne-credit {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-top: 24px; text-decoration: none;
+    color: var(--text-tertiary); font-size: 12px; font-weight: 600;
+    transition: color 0.2s;
+  }
+  .boyne-credit:hover { color: var(--text-secondary); }
+  .boyne-dots { display: flex; gap: 3px; }
+  .boyne-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); opacity: 0.6; }
+  .boyne-name {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+    font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+  .host-card {
+    background: var(--charcoal); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 24px 20px; text-align: center;
+  }
+  .host-avatar {
+    width: 68px; height: 68px; border-radius: 50%; background: var(--green);
+    margin: 0 auto 14px; display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: 24px; color: #fff; letter-spacing: 0.02em;
+  }
+  .host-name {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+    font-size: 20px; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px;
+  }
+  .host-role {
+    font-size: 11px; color: var(--green); font-weight: 700;
+    letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 14px;
+  }
+  .host-bio { font-size: 12px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .host-links { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+  .host-link {
+    font-size: 11px; font-weight: 700; color: var(--text-secondary);
+    text-decoration: none; padding: 5px 11px;
+    border: 1px solid var(--border); border-radius: var(--radius-pill);
+    transition: all 0.2s; letter-spacing: 0.03em;
+  }
+  .host-link:hover { border-color: var(--green); color: var(--green); }
+
+  /* ── STATUS ── */
+  .status-msg {
+    text-align: center; padding: 52px 24px;
+    color: var(--text-secondary); font-size: 15px; line-height: 1.7;
+  }
+  .status-msg code {
+    color: var(--green); background: var(--green-dim);
+    padding: 2px 6px; border-radius: 4px; font-size: 13px;
+  }
+
+  /* ── PLAYER BAR ── */
+  #player-bar {
+    position: fixed; bottom: -80px; left: 0; right: 0; height: 68px;
+    background: #1e1e1e; border-top: 1px solid var(--border);
+    padding: 0 5%; z-index: 200;
+    transition: bottom 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  #player-bar.visible { bottom: 0; }
+  .player-inner {
+    max-width: 1040px; margin: 0 auto; height: 100%;
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 20px; align-items: center;
+  }
+  .player-info { min-width: 0; }
+  .player-ep-title {
+    font-weight: 700; font-size: 12px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .player-show {
+    font-size: 10px; color: var(--text-tertiary); margin-top: 1px;
+    text-transform: uppercase; letter-spacing: 0.07em; font-weight: 600;
+  }
+  .player-controls { display: flex; align-items: center; gap: 8px; }
+  .ctrl {
+    background: none; border: none; color: var(--text-secondary);
+    cursor: pointer; padding: 5px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    transition: color 0.2s;
+  }
+  .ctrl:hover { color: var(--text-primary); }
+  #pp-btn {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--green); color: #fff; border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background 0.2s, transform 0.15s; flex-shrink: 0;
+  }
+  #pp-btn:hover { background: var(--green-dark); transform: scale(1.06); }
+  .player-right {
+    display: flex; align-items: center; gap: 8px; justify-content: flex-end;
+  }
+  .time-txt {
+    font-size: 10px; color: var(--text-tertiary);
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+    min-width: 80px; text-align: right;
+  }
+  #prog { width: 120px; accent-color: var(--green); cursor: pointer; height: 3px; }
+  .close-btn {
+    background: none; border: none; color: var(--text-tertiary);
+    cursor: pointer; font-size: 19px; line-height: 1;
+    padding: 4px; transition: color 0.2s; margin-left: 2px;
+  }
+  .close-btn:hover { color: var(--text-primary); }
+
+  /* ── FOOTER ── */
+  footer { border-top: 1px solid var(--border); padding: 28px 5%; }
+  .footer-inner {
+    max-width: 1040px; margin: 0 auto;
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  }
+  .footer-copy { font-size: 12px; color: var(--text-tertiary); }
+  .footer-copy a { color: var(--text-secondary); text-decoration: none; }
+  .footer-copy a:hover { color: var(--green); }
+  .footer-dots { display: flex; gap: 4px; align-items: center; }
+  .footer-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); opacity: 0.45; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fu { animation: fadeUp 0.42s ease both; }
+  .fu:nth-child(1){animation-delay:.04s} .fu:nth-child(2){animation-delay:.09s}
+  .fu:nth-child(3){animation-delay:.14s} .fu:nth-child(4){animation-delay:.19s}
+  .fu:nth-child(5){animation-delay:.24s} .fu:nth-child(6){animation-delay:.29s}
+  .fu:nth-child(7){animation-delay:.34s} .fu:nth-child(8){animation-delay:.39s}
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 800px) {
+    .hero-wrap { grid-template-columns: 1fr; gap: 32px; padding-top: 40px; }
+    .cover-art { max-width: 240px; margin: 0 auto; }
+    .hero-title { font-size: 58px; }
+    .about-grid { grid-template-columns: 1fr; }
+    .nav-links .hide-mob { display: none; }
+    .player-inner { grid-template-columns: 1fr auto; }
+    .player-right { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-wordmark">
+      <span class="nav-wordmark-text">
+        BOYNE LABS
+        <span class="labs-dots">
+          <span class="labs-dot"></span>
+          <span class="labs-dot"></span>
+          <span class="labs-dot"></span>
+          <span class="labs-dot"></span>
+        </span>
+      </span>
+      <span class="nav-wordmark-tagline">The right technology track</span>
+    </a>
+    <ul class="nav-links">
+      <li class="hide-mob"><a href="index.html">Home</a></li>
+      <li><a href="podcast.html" class="active">Podcast</a></li>
+      <li class="hide-mob nav-contact">
+        <button class="nav-contact-btn" id="contact-btn" aria-expanded="false">
+          Contact
+          <svg class="nav-contact-chevron" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="2,3 5,7 8,3"/></svg>
+        </button>
+        <div class="nav-contact-dropdown" id="contact-dropdown">
+          <a href="mailto:hello@boynelabs.com">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            hello@boynelabs.com
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero-wrap">
+  <div>
+    <div class="hero-eyebrow">
+      <div class="eyebrow-dot"></div>
+      New Episodes Weekly
+    </div>
+    <h1 class="hero-title">WIRED<br><span class="amp">&amp;</span><br>HAMMERED</h1>
+    <p class="hero-sub">Straight talk about construction, buildings and mining technology — from the people actually building the future.</p>
+    <div class="hero-actions">
+      <a href="#episodes" class="btn-primary">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M3 2.5l10 5.5-10 5.5z"/></svg>
+        Latest Episodes
+      </a>
+      <a href="#subscribe" class="btn-ghost">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
+        Subscribe Free
+      </a>
+    </div>
+  </div>
+  <div>
+    <div class="cover-art">
+      <img class="cover-logo" src="Wired___Hammered_logo_white.png" alt="Wired & Hammered Podcast">
+      <div class="cover-badge">wiredandhammered.fm</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SUBSCRIBE STRIP ── -->
+<div class="platforms-wrap" id="subscribe">
+  <div class="platforms-inner">
+    <span class="platforms-label">Listen on</span>
+    <a href="https://open.spotify.com/show/46TIaDwVbHLqdzV4xUsmWA" target="_blank" class="platform-pill"><div class="picon pi-spot"></div>Spotify</a>
+    <a href="https://podcasts.apple.com/us/podcast/wired-hammered/id1850639702" target="_blank" class="platform-pill"><div class="picon pi-apple"></div>Apple Podcasts</a>
+    <a href="https://pocketcasts.com/podcast/wired-hammered/b6078730-9b79-013e-55e6-025671e558a9" target="_blank" class="platform-pill"><div class="picon pi-pocket"></div>Pocket Casts</a>
+    <a id="rss-feed-link" href="https://rss.buzzsprout.com/2553583.rss" target="_blank" class="platform-pill"><div class="picon pi-rss"></div>RSS Feed</a>
+  </div>
+</div>
+
+<!-- ── EPISODES ── -->
+<div class="section" id="episodes">
+  <div class="section-hd">
+    <h2>Latest Episodes</h2>
+    <a href="#" class="see-all">All episodes →</a>
+  </div>
+  <div id="episodes-list">
+    <div class="status-msg">Loading episodes…</div>
+  </div>
+  <button id="load-more-btn">Load more episodes</button>
+</div>
+
+<!-- ── ABOUT ── -->
+<div class="about-bg">
+  <div class="section" id="about">
+    <div class="section-hd"><h2>About the Show</h2></div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>Wired &amp; Hammered goes deep on the technology reshaping construction, buildings and mining — without the hype. Every episode is a practitioner-to-practitioner conversation with the founders, operators and builders driving real change.</p>
+        <p>Topics span AI on site, machinery automation, digital twins, workforce tech, project management platforms, and the business of selling into one of the world's most demanding industries.</p>
+        <p>Hosted from Brisbane, Australia — reaching a global construction technology audience.</p>
+        <a href="index.html" class="boyne-credit">
+          <span>A</span>
+          <div class="boyne-dots">
+            <div class="boyne-dot"></div><div class="boyne-dot"></div>
+            <div class="boyne-dot"></div><div class="boyne-dot"></div>
+          </div>
+          <span class="boyne-name">Boyne Labs</span>
+          <span>production</span>
+        </a>
+      </div>
+      <div class="host-card">
+        <div class="host-avatar">JN</div>
+        <div class="host-name">John Naughton</div>
+        <div class="host-role">Host &amp; Producer</div>
+        <p class="host-bio">CCO at Presien. 20+ years across construction and mining technology. Former CEO of GoContractor, Head of On-Machine Products at Trimble.</p>
+        <div class="host-links">
+          <a href="index.html" class="host-link">Boyne Labs</a>
+          <a href="https://www.linkedin.com/in/johnnaughton" target="_blank" class="host-link">LinkedIn</a>
+          <a href="mailto:hello@boynelabs.com" class="host-link">Email</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p class="footer-copy">© <span id="yr"></span> Wired &amp; Hammered · A <a href="index.html">Boyne Labs</a> production · Brisbane, AU</p>
+    <div class="footer-dots">
+      <div class="footer-dot"></div><div class="footer-dot"></div>
+      <div class="footer-dot"></div><div class="footer-dot"></div>
+    </div>
+  </div>
+</footer>
+
+<!-- ── PLAYER ── -->
+<div id="player-bar">
+  <div class="player-inner">
+    <div class="player-info">
+      <div class="player-ep-title" id="player-title">—</div>
+      <div class="player-show">Wired &amp; Hammered</div>
+    </div>
+    <div class="player-controls">
+      <button class="ctrl" id="rw-btn" title="Back 30s">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.62"/>
+          <text x="8.5" y="15.5" font-size="5.5" fill="currentColor" stroke="none" font-family="Barlow,sans-serif" font-weight="700">30</text>
+        </svg>
+      </button>
+      <button id="pp-btn" title="Play / Pause">
+        <svg id="pi" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M3 2.5l10 5.5-10 5.5z"/></svg>
+        <svg id="pau" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="display:none"><rect x="3" y="2" width="4" height="12"/><rect x="9" y="2" width="4" height="12"/></svg>
+      </button>
+      <button class="ctrl" id="ff-btn" title="Forward 30s">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.49-3.62"/>
+          <text x="8.5" y="15.5" font-size="5.5" fill="currentColor" stroke="none" font-family="Barlow,sans-serif" font-weight="700">30</text>
+        </svg>
+      </button>
+    </div>
+    <div class="player-right">
+      <span class="time-txt" id="time-txt">0:00 / 0:00</span>
+      <input type="range" id="prog" min="0" max="100" value="0" step="0.1">
+      <button class="close-btn" id="close-btn" title="Close">×</button>
+    </div>
+  </div>
+</div>
+<audio id="audio"></audio>
+
+<script>
+const RSS_URL = 'https://rss.buzzsprout.com/2553583.rss';
+const PROXY   = 'https://api.allorigins.win/raw?url=';
+
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+let episodes=[], shown=0, nowIdx=-1;
+const PAGE=8, aud=document.getElementById('audio');
+
+async function loadFeed(){
+  const list=document.getElementById('episodes-list');
+  try{
+    const res=await fetch(PROXY+encodeURIComponent(RSS_URL));
+    if(!res.ok) throw new Error();
+    const xml=new DOMParser().parseFromString(await res.text(),'application/xml');
+    const sl=xml.querySelector('link[rel="self"]');
+    document.getElementById('rss-feed-link').href=sl?sl.getAttribute('href'):RSS_URL;
+    const items=Array.from(xml.querySelectorAll('item'));
+    episodes=items.map((it,i)=>({
+      i, title:it.querySelector('title')?.textContent.trim()||`Episode ${items.length-i}`,
+      date:it.querySelector('pubDate')?.textContent||'',
+      dur:it.querySelector('duration')?.textContent.trim()||'',
+      src:it.querySelector('enclosure')?.getAttribute('url')||'',
+      epn:it.querySelector('episode')?.textContent.trim()||String(items.length-i),
+      link:it.querySelector('link')?.textContent.trim()||'#',
+    }));
+    list.innerHTML=''; renderPage();
+  } catch{
+    list.innerHTML=`<div class="status-msg">
+      <p style="margin-bottom:10px;font-size:20px">📡</p>
+      <p>Couldn't load the feed right now.</p>
+      <p style="font-size:12px;color:var(--text-tertiary);margin-top:10px">
+        Update <code>RSS_URL</code> with your RSS.com feed once migration is complete.
+      </p></div>`;
+  }
+}
+
+function fmtDate(s){
+  try{return new Date(s).toLocaleDateString('en-AU',{year:'numeric',month:'short',day:'numeric'});}catch{return s;}
+}
+function fmtDur(s){
+  if(!s)return'';
+  if(s.includes(':')){const p=s.split(':');if(p.length===3){const h=+p[0],m=+p[1];return h?`${h}h ${m}m`:`${m} min`;}return s;}
+  const sec=+s;if(isNaN(sec))return s;
+  const h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60);return h?`${h}h ${m}m`:`${m} min`;
+}
+function fmtTime(s){
+  if(!s||isNaN(s))return'0:00';
+  return`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+}
+
+function renderPage(){
+  const list=document.getElementById('episodes-list');
+  const btn=document.getElementById('load-more-btn');
+  const batch=episodes.slice(shown,shown+PAGE);
+  batch.forEach((ep,li)=>{
+    const gi=shown+li;
+    const d=document.createElement('div');
+    d.className='ep-card fu'+(gi===nowIdx?' playing':'');
+    d.dataset.i=gi;
+    const isNow=gi===nowIdx;
+    d.innerHTML=`
+      <div class="ep-num">${ep.epn}</div>
+      <div class="ep-body">
+        <div class="ep-title">${ep.title}</div>
+        <div class="ep-meta">
+          ${ep.date?`<span>${fmtDate(ep.date)}</span>`:''}
+          ${ep.dur?`<span>${fmtDur(ep.dur)}</span>`:''}
+        </div>
+      </div>
+      <button class="play-btn" data-i="${gi}">
+        ${isNow
+          ?`<svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><rect x="3" y="2" width="4" height="12"/><rect x="9" y="2" width="4" height="12"/></svg>`
+          :`<svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M3 2.5l10 5.5-10 5.5z"/></svg>`
+        }
+      </button>`;
+    d.addEventListener('click',e=>{
+      if(e.target.closest('.play-btn')){playEp(gi);}
+      else if(ep.link&&ep.link!=='#'){window.open(ep.link,'_blank');}
+    });
+    list.appendChild(d);
+  });
+  shown+=batch.length;
+  btn.style.display=shown<episodes.length?'block':'none';
+}
+
+document.getElementById('load-more-btn').addEventListener('click',renderPage);
+
+function playEp(idx){
+  const ep=episodes[idx]; if(!ep?.src)return;
+  const same=nowIdx===idx; nowIdx=idx; refreshCards();
+  if(same&&!aud.paused){aud.pause();setPP(false);return;}
+  aud.src=ep.src;
+  document.getElementById('player-title').textContent=ep.title;
+  document.getElementById('player-bar').classList.add('visible');
+  aud.play().catch(()=>{});setPP(true);
+}
+function setPP(p){
+  document.getElementById('pi').style.display=p?'none':'';
+  document.getElementById('pau').style.display=p?'':'none';
+}
+function refreshCards(){
+  document.querySelectorAll('.ep-card').forEach(c=>{
+    const gi=+c.dataset.i;
+    c.classList.toggle('playing',gi===nowIdx);
+    const btn=c.querySelector('.play-btn');if(!btn)return;
+    btn.innerHTML=gi===nowIdx
+      ?`<svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><rect x="3" y="2" width="4" height="12"/><rect x="9" y="2" width="4" height="12"/></svg>`
+      :`<svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M3 2.5l10 5.5-10 5.5z"/></svg>`;
+  });
+}
+document.getElementById('pp-btn').addEventListener('click',()=>{
+  if(aud.paused){aud.play();setPP(true);}else{aud.pause();setPP(false);}
+});
+document.getElementById('rw-btn').addEventListener('click',()=>{aud.currentTime=Math.max(0,aud.currentTime-30);});
+document.getElementById('ff-btn').addEventListener('click',()=>{aud.currentTime=Math.min(aud.duration||0,aud.currentTime+30);});
+document.getElementById('close-btn').addEventListener('click',()=>{
+  aud.pause();setPP(false);
+  document.getElementById('player-bar').classList.remove('visible');
+  nowIdx=-1;refreshCards();
+});
+const prog=document.getElementById('prog');
+aud.addEventListener('timeupdate',()=>{
+  if(aud.duration){
+    prog.value=(aud.currentTime/aud.duration)*100;
+    document.getElementById('time-txt').textContent=`${fmtTime(aud.currentTime)} / ${fmtTime(aud.duration)}`;
+  }
+});
+prog.addEventListener('input',()=>{if(aud.duration)aud.currentTime=(prog.value/100)*aud.duration;});
+aud.addEventListener('ended',()=>{setPP(false);if(nowIdx<episodes.length-1)playEp(nowIdx+1);});
+
+const contactBtn = document.getElementById('contact-btn');
+const contactDd  = document.getElementById('contact-dropdown');
+contactBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const open = contactDd.classList.toggle('open');
+  contactBtn.classList.toggle('open', open);
+  contactBtn.setAttribute('aria-expanded', open);
+});
+document.addEventListener('click', () => {
+  contactDd.classList.remove('open');
+  contactBtn.classList.remove('open');
+  contactBtn.setAttribute('aria-expanded', false);
+});
+
+loadFeed();
+</script>
+</body>
+</html>
