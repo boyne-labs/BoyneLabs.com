@@ -497,7 +497,7 @@
       <span class="nav-wordmark-tagline">The right technology track</span>
     </a>
     <ul class="nav-links">
-      <li class="hide-mob"><a href="index.html">Home</a></li>
+      <li><a href="index.html">Home</a></li>
       <li><a href="podcast.html" class="active">Podcast</a></li>
       <li class="hide-mob nav-contact">
         <button class="nav-contact-btn" id="contact-btn" aria-expanded="false">
@@ -520,7 +520,7 @@
   <div>
     <div class="hero-eyebrow">
       <div class="eyebrow-dot"></div>
-      New Episodes Weekly
+      New Episodes Monthly
     </div>
     <h1 class="hero-title">WIRED<br><span class="amp">&amp;</span><br>HAMMERED</h1>
     <p class="hero-sub">Straight talk about construction, buildings and mining technology — from the people actually building the future.</p>
@@ -538,7 +538,7 @@
   <div>
     <div class="cover-art">
       <img class="cover-logo" src="Wired___Hammered_logo_white.png" alt="Wired & Hammered Podcast">
-      <div class="cover-badge">wiredandhammered.fm</div>
+
     </div>
   </div>
 </div>
@@ -646,7 +646,6 @@
 
 <script>
 const RSS_URL = 'https://rss.buzzsprout.com/2553583.rss';
-const PROXY   = 'https://api.allorigins.win/raw?url=';
 
 document.getElementById('yr').textContent = new Date().getFullYear();
 
@@ -656,7 +655,7 @@ const PAGE=8, aud=document.getElementById('audio');
 async function loadFeed(){
   const list=document.getElementById('episodes-list');
   try{
-    const res=await fetch(PROXY+encodeURIComponent(RSS_URL));
+    const res=await fetch(RSS_URL);
     if(!res.ok) throw new Error();
     const xml=new DOMParser().parseFromString(await res.text(),'application/xml');
     const sl=xml.querySelector('link[rel="self"]');
