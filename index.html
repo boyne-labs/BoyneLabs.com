@@ -994,10 +994,20 @@
     ctx.restore();
 
     // Pulse rings in pixel space
+    // Manual centroid overrides: lon/lat → normalised canvas coords
+    const RING_OVERRIDES = {
+      us_can: { lon: -104.9, lat: 39.7 } // Denver — better visual centre for US+Canada
+    };
     for (const [rk, isoSet] of Object.entries(ACTIVE_REGIONS)) {
-      const [nx, ny] = regionCentroid(isoSet);
+      let nx, ny;
+      if (RING_OVERRIDES[rk]) {
+        const [ox, oy] = projectNorm(RING_OVERRIDES[rk].lon, RING_OVERRIDES[rk].lat);
+        nx = ox; ny = oy;
+      } else {
+        [nx, ny] = regionCentroid(isoSet);
+      }
       const cx = nx * W, cy = ny * H;
-      const maxR = Math.min(W, H) * 0.10;
+      const maxR = Math.min(W, H) * (rk === 'us_can' ? 0.18 : 0.10);
       [0, 0.5].forEach(off => {
         const rr = ((phase * 0.38 + off) % 1) * maxR;
         const a  = 0.30 * (1 - rr / maxR);
