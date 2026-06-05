@@ -203,10 +203,10 @@
   }
   .hero-grid {
     display: grid;
-    grid-template-columns: 1fr 340px;
-    gap: 64px;
-    align-items: center;
+    grid-template-columns: 1fr;
+    gap: 0;
     width: 100%;
+    max-width: 720px;
   }
 
   /* Left: text */
@@ -297,19 +297,7 @@
   .contact-email:hover { color: var(--green); border-color: var(--green); }
   .contact-email svg { opacity: 0.5; }
 
-  /* Right: Boyne Labs logo image */
-  .hero-logo-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .hero-logo-wrap img {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-    display: block;
-    border-radius: 24px;
-  }
+  /* hero-logo-wrap removed */
 
   /* ── FOOTER ── */
   footer {
@@ -338,12 +326,228 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 760px) {
-    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
-    .hero-logo-wrap { order: -1; }
-    .hero-logo-wrap img { max-width: 200px; margin: 0 auto; }
     .hero { padding-top: 56px; padding-bottom: 56px; }
     .hero-statement { font-size: 52px; }
     .nav-links .hide-mob { display: none; }
+  }
+
+  /* ── WHO WE WORK WITH ── */
+  .hero-who {
+    font-size: 14px;
+    color: var(--text-tertiary);
+    line-height: 1.65;
+    margin-bottom: 40px;
+    max-width: 500px;
+    padding-left: 12px;
+    border-left: 2px solid var(--border-hover);
+  }
+  .hero-who strong { color: var(--text-secondary); font-weight: 600; }
+
+  /* ── LINKEDIN ICON ── */
+  .contact-linkedin {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px; height: 38px;
+    border: 1px solid var(--border-hover);
+    border-radius: 50%;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s, border-color 0.2s, transform 0.15s;
+  }
+  .contact-linkedin:hover {
+    color: var(--green);
+    border-color: var(--green);
+    transform: translateY(-1px);
+  }
+
+  /* ── SERVICES SECTION ── */
+  .services {
+    border-top: 1px solid var(--border);
+    padding: 72px 5%;
+    background: var(--surface);
+  }
+  .services-inner {
+    max-width: 1040px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 12px;
+  }
+  .section-heading {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(32px, 4vw, 48px);
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 48px;
+    letter-spacing: -0.01em;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .service-card {
+    background: var(--charcoal);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    transition: border-color 0.2s;
+  }
+  .service-card:hover { border-color: var(--border-hover); }
+  .service-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 42px;
+    color: var(--green);
+    opacity: 0.25;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .service-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-bottom: 12px;
+    line-height: 1.1;
+  }
+  .service-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+  .service-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .service-items li {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    padding-left: 14px;
+    position: relative;
+  }
+  .service-items li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 7px;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--green);
+    opacity: 0.5;
+  }
+
+  /* ── PODCAST TEASER ── */
+  .podcast-teaser {
+    border-top: 1px solid var(--border);
+    padding: 72px 5%;
+  }
+  .podcast-teaser-inner {
+    max-width: 1040px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 64px;
+    align-items: center;
+  }
+  .podcast-cover {
+    width: 100%;
+    max-width: 280px;
+    aspect-ratio: 1;
+    border-radius: 18px;
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .podcast-cover::before {
+    content: '';
+    position: absolute;
+    width: 60%; height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,191,99,0.12) 0%, transparent 70%);
+    top: 40%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .podcast-cover img {
+    width: 78%;
+    height: 78%;
+    object-fit: contain;
+    position: relative;
+    z-index: 1;
+  }
+  .podcast-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 14px;
+  }
+  .podcast-eyebrow-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: blink 2s infinite;
+  }
+  @keyframes blink {
+    0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.65)}
+  }
+  .podcast-heading {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(36px, 4.5vw, 54px);
+    text-transform: uppercase;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+  .podcast-heading .amp { color: var(--green); font-style: italic; }
+  .podcast-desc {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 28px;
+    max-width: 440px;
+  }
+  .podcast-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--green);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 12px 24px;
+    border-radius: var(--radius-pill);
+    transition: background 0.2s, transform 0.15s;
+    letter-spacing: 0.02em;
+  }
+  .podcast-cta:hover { background: var(--green-dark); transform: translateY(-1px); }
+  .podcast-cta svg { flex-shrink: 0; }
+
+  /* ── RESPONSIVE (new sections) ── */
+  @media (max-width: 760px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .podcast-teaser-inner { grid-template-columns: 1fr; gap: 36px; }
+    .podcast-cover { max-width: 200px; margin: 0 auto; }
   }
 
   /* ── ENTRANCE ── */
@@ -356,7 +560,57 @@
   .hero-body      { animation: fadeUp 0.5s ease both 0.35s; }
   .creds          { animation: fadeUp 0.5s ease both 0.45s; }
   .contact-line   { animation: fadeUp 0.5s ease both 0.55s; }
-  .hero-logo-wrap { animation: fadeUp 0.7s ease both 0.15s; }
+
+  /* ── MAP SECTION ── */
+  .map-section {
+    border-top: 1px solid var(--border);
+    padding: 40px 5% 28px;
+  }
+  .map-inner {
+    max-width: 1040px;
+    margin: 0 auto;
+  }
+  .map-widget {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    cursor: crosshair;
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-top: 16px;
+  }
+  #cv {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border-radius: var(--radius);
+  }
+  #tr {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    border-radius: var(--radius);
+  }
+  .map-legend {
+    display: flex;
+    gap: 20px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .map-li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .map-ld { width: 8px; height: 8px; border-radius: 50%; }
+
 </style>
 </head>
 <body>
@@ -388,6 +642,10 @@
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             hello@boynelabs.com
           </a>
+          <a href="https://www.linkedin.com/in/johngnaughton/" target="_blank">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn
+          </a>
         </div>
       </li>
     </ul>
@@ -411,6 +669,7 @@
         <p class="hero-body">
           Twenty years across construction and tech means we know what <strong>builders actually need</strong> — and what it takes for <strong>tech companies to earn their trust</strong>. Led by John Naughton, former CEO of GoContractor, former Head of On-Machine Products at Trimble, current Board Member at Presien.
         </p>
+        <p class="hero-who">We work with <strong>construction companies</strong> evaluating and implementing technology, and <strong>tech vendors</strong> entering or scaling within the construction and mining sector.</p>
 
         <div class="creds">
           <span class="cred-pill">CEO — GoContractor (acquired)</span>
@@ -425,17 +684,97 @@
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             hello@boynelabs.com
           </a>
+          <a href="https://www.linkedin.com/in/johngnaughton/" target="_blank" class="contact-linkedin" aria-label="LinkedIn">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
         </div>
-      </div>
-
-      <!-- RIGHT: Boyne Labs logo -->
-      <div class="hero-logo-wrap">
-        <img src="Boyne_Labs_Dark_Logo_w_tagline.png" alt="Boyne Labs">
       </div>
 
     </div>
   </div>
 </main>
+
+
+<!-- ── GLOBAL FOOTPRINT MAP ── -->
+<section class="map-section">
+  <div class="map-inner">
+    <p class="section-label">Global footprint</p>
+    <div class="map-widget" id="mc">
+      <canvas id="cv"></canvas>
+      <canvas id="tr"></canvas>
+    </div>
+    <div class="map-legend">
+      <div class="map-li"><div class="map-ld" style="background:#00BF63"></div>Active work</div>
+      <div class="map-li"><div class="map-ld" style="background:#ffffff"></div>Experience</div>
+      <div class="map-li"><div class="map-ld" style="background:rgba(255,255,255,.13)"></div>Base map</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ── -->
+<section class="services">
+  <div class="services-inner">
+    <p class="section-label">How we work</p>
+    <h2 class="section-heading">Three ways to engage</h2>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <div class="service-num">01</div>
+        <h3 class="service-title">Technology Assessment &amp; Quick Wins</h3>
+        <p class="service-desc">Understand where you are, identify the gaps, and act on the opportunities that deliver value fastest.</p>
+        <ul class="service-items">
+          <li>Technology ecosystem map</li>
+          <li>Vendor evaluation framework</li>
+          <li>Quick-win implementation plan</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">02</div>
+        <h3 class="service-title">Strategic Technology Roadmap</h3>
+        <p class="service-desc">A clear 18-month plan that connects technology investment to business outcomes — with the numbers to back it.</p>
+        <ul class="service-items">
+          <li>Comprehensive 18-month plan</li>
+          <li>Integration architecture</li>
+          <li>Budget &amp; ROI recommendations</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">03</div>
+        <h3 class="service-title">Implementation Partnership</h3>
+        <p class="service-desc">Ongoing strategic support through delivery — vendor negotiations, performance tracking, and course corrections when needed.</p>
+        <ul class="service-items">
+          <li>Monthly strategic reviews</li>
+          <li>Vendor negotiation support</li>
+          <li>Performance optimisation</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── PODCAST TEASER ── -->
+<section class="podcast-teaser">
+  <div class="podcast-teaser-inner">
+    <div>
+      <p class="podcast-eyebrow">
+        <span class="podcast-eyebrow-dot"></span>
+        Now playing
+      </p>
+      <h2 class="podcast-heading">Wired <span class="amp">&</span><br>Hammered</h2>
+      <p class="podcast-desc">Straight talk with the founders, operators, and builders shaping construction, buildings, and mining technology. Hosted by John Naughton.</p>
+      <a href="podcast.html" class="podcast-cta">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Listen to episodes
+      </a>
+    </div>
+    <div class="podcast-cover">
+      <img src="Wired___Hammered_logo_white.png" alt="Wired & Hammered Podcast">
+    </div>
+  </div>
+</section>
 
 <footer>
   <div class="footer-inner">
@@ -448,6 +787,238 @@
     </div>
   </div>
 </footer>
+
+<script>
+/* ── GLOBAL FOOTPRINT MAP */
+(function(){
+  const ACTIVE_ISO = new Set(['AUS','NZL','GBR','IRL','USA','CAN']);
+  const EXP_ISO = new Set([
+    'CHL','ARE','IND','CHN','JPN','KOR',
+    'MYS','SGP','THA','IDN','VNM','PHL','MMR','KHM','LAO','BRN',
+    'MAR','ZAF','LSO','SWZ','COD','COG','GAB','CMR','CAF','AGO'
+  ]);
+  const ACTIVE_REGIONS = {
+    aus_nz: new Set(['AUS','NZL']),
+    uk_ire: new Set(['GBR','IRL']),
+    us_can: new Set(['USA','CAN'])
+  };
+
+  const cv   = document.getElementById('cv');
+  const tr   = document.getElementById('tr');
+  const ctx  = cv.getContext('2d');
+  const tctx = tr.getContext('2d');
+  let W, H, DPR, phase=0, raf, GEO=null;
+  let trail=[], normPaths=null;
+  const TRAIL_LEN=14;
+  const LAT_MIN=-58, LAT_MAX=72;
+
+  // Mercator min/max for the lat range
+  const _mMin = Math.log(Math.tan(Math.PI/4 + LAT_MIN*Math.PI/360));
+  const _mMax = Math.log(Math.tan(Math.PI/4 + LAT_MAX*Math.PI/360));
+
+  // Project lon/lat to normalised 0..1 space
+  function projectNorm(lon, lat) {
+    const x = (lon + 180) / 360;
+    const latC = Math.max(LAT_MIN, Math.min(LAT_MAX, lat));
+    const latR = latC * Math.PI / 180;
+    const m = Math.log(Math.tan(Math.PI/4 + latR/2));
+    const y = 1 - (m - _mMin) / (_mMax - _mMin);
+    return [x, y];
+  }
+
+  // Build all paths once in normalised space
+  function buildNormPaths() {
+    if (!GEO || normPaths) return;
+    normPaths = { base:[], exp:[], active:{aus_nz:[],uk_ire:[],us_can:[]} };
+    for (const f of GEO.features) {
+      if (!f.geometry) continue;
+      const iso = f.properties.iso_a3;
+      const p = new Path2D();
+      function ring(coords) {
+        if (!coords || !coords.length) return;
+        let first=true, prevLon=null;
+        for (const [lon, lat] of coords) {
+          const [x,y] = projectNorm(lon, lat);
+          if (prevLon !== null && Math.abs(lon - prevLon) > 180) first=true;
+          if (first) { p.moveTo(x,y); first=false; } else p.lineTo(x,y);
+          prevLon = lon;
+        }
+        p.closePath();
+      }
+      if (f.geometry.type==='Polygon') f.geometry.coordinates.forEach(ring);
+      else if (f.geometry.type==='MultiPolygon') f.geometry.coordinates.forEach(poly=>poly.forEach(ring));
+      normPaths.base.push({path:p, iso});
+      if (EXP_ISO.has(iso)) normPaths.exp.push(p);
+      for (const [rk,set] of Object.entries(ACTIVE_REGIONS)) {
+        if (set.has(iso)) normPaths.active[rk].push(p);
+      }
+    }
+  }
+
+  // Centroid in normalised space
+  function regionCentroid(isoSet) {
+    if (!GEO) return [0.5, 0.5];
+    let sx=0, sy=0, n=0;
+    for (const f of GEO.features) {
+      if (!isoSet.has(f.properties.iso_a3) || !f.geometry) continue;
+      const rings = f.geometry.type==='Polygon'
+        ? [f.geometry.coordinates[0]]
+        : f.geometry.coordinates.map(p=>p[0]);
+      for (const ring of rings) {
+        for (const [lon,lat] of ring) {
+          const [x,y] = projectNorm(lon,lat); sx+=x; sy+=y; n++;
+        }
+      }
+    }
+    return n ? [sx/n, sy/n] : [0.5, 0.5];
+  }
+
+  function resize() {
+    DPR = window.devicePixelRatio || 1;
+    const container = cv.parentElement;
+    W = container.offsetWidth;
+    H = container.offsetHeight;
+    [cv,tr].forEach(c => {
+      c.width  = Math.round(W * DPR);
+      c.height = Math.round(H * DPR);
+    });
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    tctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+
+  function drawMap(ts) {
+    phase = ts / 1000;
+    buildNormPaths();
+    ctx.clearRect(0, 0, W, H);
+
+    if (!normPaths) { raf=requestAnimationFrame(drawMap); return; }
+
+    // Scale 0..1 normalised coords → canvas pixels
+    ctx.save();
+    ctx.scale(W, H);
+
+    const lw = 1 / Math.max(W, H);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.10)';
+    ctx.strokeStyle = 'rgba(45,45,45,0.8)';
+    ctx.lineWidth = lw * 0.5;
+    for (const {path} of normPaths.base) { ctx.fill(path); ctx.stroke(path); }
+
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.strokeStyle = 'rgba(255,255,255,0.20)';
+    ctx.lineWidth = lw * 0.7;
+    for (const path of normPaths.exp) { ctx.fill(path); ctx.stroke(path); }
+
+    ctx.fillStyle = '#00BF63';
+    ctx.strokeStyle = 'rgba(0,191,99,0.6)';
+    ctx.lineWidth = lw;
+    for (const paths of Object.values(normPaths.active)) {
+      for (const path of paths) { ctx.fill(path); ctx.stroke(path); }
+    }
+
+    ctx.restore();
+
+    // Pulse rings in pixel space
+    for (const [rk, isoSet] of Object.entries(ACTIVE_REGIONS)) {
+      const [nx, ny] = regionCentroid(isoSet);
+      const cx = nx * W, cy = ny * H;
+      const maxR = Math.min(W, H) * 0.10;
+      [0, 0.5].forEach(off => {
+        const rr = ((phase * 0.38 + off) % 1) * maxR;
+        const a  = 0.30 * (1 - rr / maxR);
+        ctx.beginPath();
+        ctx.arc(cx, cy, rr + 5, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(255,220,60,${a})`;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      });
+    }
+
+    raf = requestAnimationFrame(drawMap);
+  }
+
+  function drawTrail() {
+    tctx.clearRect(0,0,W,H);
+    if (trail.length<2) return;
+    for (let i=1;i<trail.length;i++) {
+      const t=trail[i], p=trail[i-1], age=i/trail.length, r=Math.max(1,3*age), a=age*0.85;
+      tctx.beginPath(); tctx.arc(t[0],t[1],r,0,Math.PI*2);
+      tctx.fillStyle=`rgba(0,191,99,${a})`; tctx.fill();
+      tctx.beginPath(); tctx.moveTo(p[0],p[1]); tctx.lineTo(t[0],t[1]);
+      tctx.strokeStyle=`rgba(0,191,99,${a*0.4})`; tctx.lineWidth=r*0.8; tctx.stroke();
+    }
+    const last=trail[trail.length-1];
+    tctx.beginPath(); tctx.arc(last[0],last[1],4,0,Math.PI*2);
+    tctx.fillStyle='rgba(255,255,255,0.9)'; tctx.fill();
+  }
+
+  document.getElementById('mc').addEventListener('mousemove', e => {
+    const rect = cv.getBoundingClientRect();
+    trail.push([e.clientX-rect.left, e.clientY-rect.top]);
+    if (trail.length > TRAIL_LEN) trail.shift();
+    drawTrail();
+  });
+  document.getElementById('mc').addEventListener('mouseleave', () => {
+    trail=[]; tctx.clearRect(0,0,W,H);
+  });
+  window.addEventListener('resize', () => {
+    cancelAnimationFrame(raf); resize(); requestAnimationFrame(drawMap);
+  });
+
+  const N2A={4:'AFG',8:'ALB',12:'DZA',24:'AGO',32:'ARG',36:'AUS',40:'AUT',
+    50:'BGD',56:'BEL',64:'BTN',68:'BOL',76:'BRA',100:'BGR',116:'KHM',120:'CMR',
+    124:'CAN',140:'CAF',144:'LKA',148:'TCD',152:'CHL',156:'CHN',158:'TWN',
+    170:'COL',178:'COG',180:'COD',188:'CRI',192:'CUB',196:'CYP',203:'CZE',
+    204:'BEN',208:'DNK',214:'DOM',218:'ECU',222:'SLV',231:'ETH',232:'ERI',
+    233:'EST',246:'FIN',250:'FRA',266:'GAB',276:'DEU',288:'GHA',300:'GRC',
+    320:'GTM',324:'GIN',332:'HTI',340:'HND',348:'HUN',356:'IND',360:'IDN',
+    364:'IRN',368:'IRQ',372:'IRL',376:'ISR',380:'ITA',384:'CIV',392:'JPN',
+    398:'KAZ',400:'JOR',404:'KEN',408:'PRK',410:'KOR',414:'KWT',418:'LAO',
+    422:'LBN',426:'LSO',430:'LBR',440:'LTU',442:'LUX',450:'MDG',454:'MWI',
+    458:'MYS',466:'MLI',478:'MRT',484:'MEX',496:'MNG',498:'MDA',499:'MNE',
+    504:'MAR',508:'MOZ',516:'NAM',524:'NPL',528:'NLD',540:'NCL',548:'VUT',
+    554:'NZL',558:'NIC',562:'NER',566:'NGA',578:'NOR',586:'PAK',591:'PAN',
+    598:'PNG',600:'PRY',604:'PER',608:'PHL',616:'POL',620:'PRT',624:'GNB',
+    626:'TLS',630:'PRI',634:'QAT',642:'ROU',643:'RUS',646:'RWA',682:'SAU',
+    686:'SEN',688:'SRB',694:'SLE',703:'SVK',704:'VNM',705:'SVN',706:'SOM',
+    710:'ZAF',716:'ZWE',724:'ESP',728:'SSD',729:'SDN',740:'SUR',748:'SWZ',
+    752:'SWE',756:'CHE',760:'SYR',762:'TJK',764:'THA',768:'TGO',780:'TTO',
+    784:'ARE',788:'TUN',792:'TUR',795:'TKM',800:'UGA',804:'UKR',818:'EGY',
+    826:'GBR',834:'TZA',840:'USA',854:'BFA',858:'URY',860:'UZB',862:'VEN',
+    887:'YEM',894:'ZMB',96:'BRN',104:'MMR'};
+
+  function topoToGeo(topo) {
+    const obj=topo.objects.countries;
+    const sc=topo.transform.scale, tr2=topo.transform.translate;
+    const decoded=topo.arcs.map(arc=>{
+      const pts=[]; let x=0,y=0;
+      for(const [dx,dy] of arc){x+=dx;y+=dy;pts.push([x*sc[0]+tr2[0],y*sc[1]+tr2[1]]);}
+      return pts;
+    });
+    function getArc(i){return i>=0?decoded[i]:decoded[~i].slice().reverse();}
+    function toRing(ids){const r=[];for(const i of ids)r.push(...getArc(i));return r;}
+    function toGeom(g){
+      if(g.type==='Polygon') return {type:'Polygon',coordinates:g.arcs.map(toRing)};
+      if(g.type==='MultiPolygon') return {type:'MultiPolygon',coordinates:g.arcs.map(p=>p.map(toRing))};
+      return null;
+    }
+    return {type:'FeatureCollection',features:obj.geometries.map(g=>({
+      type:'Feature',
+      properties:{iso_a3:N2A[+g.id]||('_'+g.id),id:g.id},
+      geometry:toGeom(g)
+    })).filter(f=>f.geometry)};
+  }
+
+  fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+    .then(r=>r.json())
+    .then(topo=>{
+      GEO=topoToGeo(topo);
+      resize();
+      requestAnimationFrame(drawMap);
+    })
+    .catch(()=>{ GEO={features:[]}; resize(); requestAnimationFrame(drawMap); });
+})();
+</script>
 
 <script>
 document.getElementById('yr').textContent = new Date().getFullYear();
