@@ -608,10 +608,6 @@
         <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M3 2.5l10 5.5-10 5.5z"/></svg>
         Latest Episodes
       </a>
-      <a href="#subscribe" class="btn-ghost">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
-        Subscribe Free
-      </a>
     </div>
   </div>
   <div>
@@ -629,7 +625,7 @@
     <a href="https://open.spotify.com/show/46TIaDwVbHLqdzV4xUsmWA" target="_blank" class="platform-pill"><div class="picon pi-spot"></div>Spotify</a>
     <a href="https://podcasts.apple.com/us/podcast/wired-hammered/id1850639702" target="_blank" class="platform-pill"><div class="picon pi-apple"></div>Apple Podcasts</a>
     <a href="https://pocketcasts.com/podcast/wired-hammered/b6078730-9b79-013e-55e6-025671e558a9" target="_blank" class="platform-pill"><div class="picon pi-pocket"></div>Pocket Casts</a>
-    <a id="rss-feed-link" href="https://rss.buzzsprout.com/2553583.rss" target="_blank" class="platform-pill"><div class="picon pi-rss"></div>RSS Feed</a>
+    <a id="rss-feed-link" href="https://media.rss.com/wired-and-hammered/feed.xml" target="_blank" class="platform-pill"><div class="picon pi-rss"></div>RSS Feed</a>
   </div>
 </div>
 
@@ -724,7 +720,7 @@
 <audio id="audio"></audio>
 
 <script>
-const RSS_URL = 'https://rss.buzzsprout.com/2553583.rss';
+const RSS_URL = 'https://media.rss.com/wired-and-hammered/feed.xml';
 
 document.getElementById('yr').textContent = new Date().getFullYear();
 
@@ -754,7 +750,6 @@ async function loadFeed(){
       <p style="margin-bottom:10px;font-size:20px">📡</p>
       <p>Couldn't load the feed right now.</p>
       <p style="font-size:12px;color:var(--text-tertiary);margin-top:10px">
-        Update <code>RSS_URL</code> with your RSS.com feed once migration is complete.
       </p></div>`;
   }
 }
