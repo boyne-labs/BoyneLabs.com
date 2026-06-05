@@ -611,6 +611,78 @@
   }
   .map-ld { width: 8px; height: 8px; border-radius: 50%; }
 
+
+  /* ── HAMBURGER / MOBILE NAV ── */
+  .nav-hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    color: var(--text-primary);
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-end;
+  }
+  .nav-hamburger span {
+    display: block;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+    transition: transform 0.2s, opacity 0.2s, width 0.2s;
+  }
+  .nav-hamburger span:nth-child(1) { width: 22px; }
+  .nav-hamburger span:nth-child(2) { width: 16px; }
+  .nav-hamburger span:nth-child(3) { width: 22px; }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); width: 22px; }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); width: 22px; }
+
+  @media (max-width: 760px) {
+    .nav-hamburger { display: flex; }
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 68px;
+      left: 0; right: 0;
+      background: rgba(34,34,34,0.98);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      flex-direction: column;
+      padding: 8px 0 12px;
+      gap: 0;
+      z-index: 99;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links li { width: 100%; }
+    .nav-links a {
+      display: block;
+      padding: 12px 24px;
+      font-size: 14px;
+    }
+    .nav-contact { position: static; }
+    .nav-contact-btn {
+      width: 100%;
+      padding: 12px 24px;
+      font-size: 14px;
+      justify-content: flex-start;
+    }
+    .nav-contact-dropdown {
+      position: static;
+      opacity: 1;
+      transform: none;
+      pointer-events: all;
+      background: rgba(255,255,255,0.04);
+      border: none;
+      border-radius: 0;
+      padding: 0 0 4px 24px;
+      min-width: unset;
+      display: none;
+    }
+    .nav-contact-dropdown.open { display: block; }
+    .nav-contact-dropdown a { padding: 10px 14px; font-size: 13px; }
+  }
 </style>
 </head>
 <body>
@@ -629,7 +701,10 @@
       </span>
       <span class="nav-wordmark-tagline">The right technology track</span>
     </a>
-    <ul class="nav-links">
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
       <li><a href="index.html" class="active">Home</a></li>
       <li><a href="podcast.html">Podcast</a></li>
       <li class="nav-contact">
@@ -1035,6 +1110,20 @@ document.addEventListener('click', () => {
   contactDd.classList.remove('open');
   contactBtn.classList.remove('open');
   contactBtn.setAttribute('aria-expanded', false);
+});
+
+const hamburger = document.getElementById('nav-hamburger');
+const navLinks  = document.getElementById('nav-links');
+hamburger.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const open = navLinks.classList.toggle('open');
+  hamburger.classList.toggle('open', open);
+  hamburger.setAttribute('aria-expanded', open);
+});
+document.addEventListener('click', () => {
+  navLinks.classList.remove('open');
+  hamburger.classList.remove('open');
+  hamburger.setAttribute('aria-expanded', false);
 });
 </script>
 </body>
