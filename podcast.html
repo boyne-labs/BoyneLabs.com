@@ -795,7 +795,7 @@ function renderPage(){
       </button>`;
     d.addEventListener('click',e=>{
       if(e.target.closest('.play-btn')){playEp(gi);}
-      else if(ep.link&&ep.link!=='#'){window.open(ep.link,'_blank');}
+      else{playEp(gi);}
     });
     list.appendChild(d);
   });
@@ -807,8 +807,15 @@ document.getElementById('load-more-btn').addEventListener('click',renderPage);
 
 function playEp(idx){
   const ep=episodes[idx]; if(!ep?.src)return;
-  const same=nowIdx===idx; nowIdx=idx; refreshCards();
-  if(same&&!aud.paused){aud.pause();setPP(false);return;}
+  const same=nowIdx===idx;
+  if(same){
+    // Same episode — toggle pause/resume, never restart
+    if(aud.paused){aud.play().catch(()=>{});setPP(true);}
+    else{aud.pause();setPP(false);}
+    return;
+  }
+  // Different episode — load and play from start
+  nowIdx=idx; refreshCards();
   aud.src=ep.src;
   document.getElementById('player-title').textContent=ep.title;
   document.getElementById('player-bar').classList.add('visible');
@@ -823,7 +830,8 @@ function refreshCards(){
     const gi=+c.dataset.i;
     c.classList.toggle('playing',gi===nowIdx);
     const btn=c.querySelector('.play-btn');if(!btn)return;
-    btn.innerHTML=gi===nowIdx
+    const isPlaying=gi===nowIdx&&!aud.paused;
+    btn.innerHTML=isPlaying
       ?`<svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><rect x="3" y="2" width="4" height="12"/><rect x="9" y="2" width="4" height="12"/></svg>`
       :`<svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M3 2.5l10 5.5-10 5.5z"/></svg>`;
   });
@@ -831,6 +839,8 @@ function refreshCards(){
 document.getElementById('pp-btn').addEventListener('click',()=>{
   if(aud.paused){aud.play();setPP(true);}else{aud.pause();setPP(false);}
 });
+aud.addEventListener('play', refreshCards);
+aud.addEventListener('pause', refreshCards);
 document.getElementById('rw-btn').addEventListener('click',()=>{aud.currentTime=Math.max(0,aud.currentTime-30);});
 document.getElementById('ff-btn').addEventListener('click',()=>{aud.currentTime=Math.min(aud.duration||0,aud.currentTime+30);});
 document.getElementById('close-btn').addEventListener('click',()=>{
@@ -877,6 +887,74 @@ document.addEventListener('click', () => {
   hamburger.classList.remove('open');
   hamburger.setAttribute('aria-expanded', false);
 });
+</script>
+
+<script>
+(function(){
+  const COUNT   = 14;
+  const LERP    = 0.30;
+  const MAX_R   = 5.5;
+  const MIN_R   = 0.8;
+  const COLOR   = '0,191,99';
+  const HIDDEN_X = -200;
+
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:visible;';
+  document.body.appendChild(svg);
+
+  const dots = Array.from({ length: COUNT }, (_, i) => {
+    const t = i / (COUNT - 1);
+    const r = MAX_R - t * (MAX_R - MIN_R);
+    const a = 1 - t * 0.85;
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('r', r);
+    circle.setAttribute('fill', `rgba(${COLOR},${a})`);
+    svg.appendChild(circle);
+    return { el: circle, x: HIDDEN_X, y: HIDDEN_X, r, a };
+  });
+
+  let mouseX = HIDDEN_X, mouseY = HIDDEN_X;
+  let active = false;
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    if (!active) {
+      dots.forEach(d => { d.x = mouseX; d.y = mouseY; });
+      active = true;
+    }
+  });
+
+  document.addEventListener('mouseleave', () => {
+    active = false;
+    mouseX = HIDDEN_X;
+    mouseY = HIDDEN_X;
+  });
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function frame() {
+    requestAnimationFrame(frame);
+    dots[0].x = lerp(dots[0].x, mouseX, LERP * 1.6);
+    dots[0].y = lerp(dots[0].y, mouseY, LERP * 1.6);
+    for (let i = 1; i < COUNT; i++) {
+      dots[i].x = lerp(dots[i].x, dots[i - 1].x, LERP);
+      dots[i].y = lerp(dots[i].y, dots[i - 1].y, LERP);
+    }
+    const dx = dots[0].x - dots[COUNT - 1].x;
+    const dy = dots[0].y - dots[COUNT - 1].y;
+    const spread = Math.min(1, Math.sqrt(dx*dx + dy*dy) / 60);
+    dots.forEach((d, i) => {
+      const t = i / (COUNT - 1);
+      const visibleR = d.r * (i === 0 ? 1 : spread * (1 - t * 0.5) + 0.05);
+      d.el.setAttribute('cx', d.x);
+      d.el.setAttribute('cy', d.y);
+      d.el.setAttribute('r', Math.max(0, visibleR));
+    });
+  }
+
+  frame();
+})();
 </script>
 </body>
 </html>

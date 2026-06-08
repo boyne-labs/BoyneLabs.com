@@ -690,7 +690,7 @@
 </style>
 </head>
 <body>
-<canvas id="comet-cv" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;"></canvas>
+<!-- cursor trail: SVG lerp chain injected by script -->
 
 <nav>
   <div class="nav-inner">
@@ -1116,61 +1116,91 @@ document.addEventListener('click', () => {
 
 <script>
 (function(){
-  const cv = document.getElementById('comet-cv');
-  const ctx = cv.getContext('2d');
-  let W, H, DPR;
-  let trail = [];
-  const TRAIL_LEN = 16;
+  // ── SVG lerp-chain cursor trail (CodeGrid technique) ──────────────────
+  // Each dot lazily follows the one ahead of it each frame via lerp.
+  // When the mouse stops all dots converge to the same point → disappears cleanly.
+  // No canvas, no decay timers needed.
 
-  function resize() {
-    DPR = window.devicePixelRatio || 1;
-    W = window.innerWidth;
-    H = window.innerHeight;
-    cv.width  = Math.round(W * DPR);
-    cv.height = Math.round(H * DPR);
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-  }
+  const COUNT   = 14;    // number of chain links
+  const LERP    = 0.30;  // how fast each link chases the one ahead (0=frozen, 1=instant)
+  const MAX_R   = 5.5;   // radius of head dot (px)
+  const MIN_R   = 0.8;   // radius of tail dot (px)
+  const COLOR   = '0,191,99';  // green RGB
+  const HIDDEN_X = -200; // park off-screen until first mousemove
 
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    if (trail.length < 2) return;
-    for (let i = 1; i < trail.length; i++) {
-      const t = trail[i], p = trail[i-1];
-      const age = i / trail.length;
-      const r = Math.max(0.5, 3 * age);
-      const a = age * 0.7;
-      ctx.beginPath();
-      ctx.arc(t[0], t[1], r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(0,191,99,${a})`;
-      ctx.fill();
-      ctx.beginPath();
-      ctx.moveTo(p[0], p[1]);
-      ctx.lineTo(t[0], t[1]);
-      ctx.strokeStyle = `rgba(0,191,99,${a * 0.35})`;
-      ctx.lineWidth = r * 0.8;
-      ctx.stroke();
-    }
-    const last = trail[trail.length - 1];
-    ctx.beginPath();
-    ctx.arc(last[0], last[1], 3.5, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(255,255,255,0.85)';
-    ctx.fill();
-  }
+  // Build SVG overlay
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:visible;';
+  document.body.appendChild(svg);
+
+  // Create dots — index 0 = head (follows mouse), COUNT-1 = tail
+  const dots = Array.from({ length: COUNT }, (_, i) => {
+    const t = i / (COUNT - 1);            // 0=head … 1=tail
+    const r = MAX_R - t * (MAX_R - MIN_R);
+    const a = 1 - t * 0.85;              // opacity: 1 at head → 0.15 at tail
+
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('r', r);
+    circle.setAttribute('fill', `rgba(${COLOR},${a})`);
+    svg.appendChild(circle);
+
+    return { el: circle, x: HIDDEN_X, y: HIDDEN_X, r, a };
+  });
+
+  // Head tracks the real mouse
+  let mouseX = HIDDEN_X, mouseY = HIDDEN_X;
+  let active = false;
 
   document.addEventListener('mousemove', e => {
-    trail.push([e.clientX, e.clientY]);
-    if (trail.length > TRAIL_LEN) trail.shift();
-    draw();
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    if (!active) {
+      // Teleport whole chain to cursor on first entry so it doesn't snake in from off-screen
+      dots.forEach(d => { d.x = mouseX; d.y = mouseY; });
+      active = true;
+    }
   });
 
   document.addEventListener('mouseleave', () => {
-    trail = [];
-    ctx.clearRect(0, 0, W, H);
+    active = false;
+    mouseX = HIDDEN_X;
+    mouseY = HIDDEN_X;
   });
 
-  window.addEventListener('resize', resize);
-  resize();
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function frame() {
+    requestAnimationFrame(frame);
+
+    // Head chases mouse
+    dots[0].x = lerp(dots[0].x, mouseX, LERP * 1.6); // head is snappier
+    dots[0].y = lerp(dots[0].y, mouseY, LERP * 1.6);
+
+    // Each subsequent dot chases the one ahead
+    for (let i = 1; i < COUNT; i++) {
+      dots[i].x = lerp(dots[i].x, dots[i - 1].x, LERP);
+      dots[i].y = lerp(dots[i].y, dots[i - 1].y, LERP);
+    }
+
+    // Compute how spread out the chain is (0=collapsed, 1=fully stretched)
+    // When all dots converge the tail shrinks to nothing
+    const dx = dots[0].x - dots[COUNT - 1].x;
+    const dy = dots[0].y - dots[COUNT - 1].y;
+    const spread = Math.min(1, Math.sqrt(dx*dx + dy*dy) / 60);
+
+    dots.forEach((d, i) => {
+      const t = i / (COUNT - 1);
+      // Scale radius down when chain is collapsed so it vanishes when still
+      const visibleR = d.r * (i === 0 ? 1 : spread * (1 - t * 0.5) + 0.05);
+      d.el.setAttribute('cx', d.x);
+      d.el.setAttribute('cy', d.y);
+      d.el.setAttribute('r', Math.max(0, visibleR));
+    });
+  }
+
+  frame();
 })();
 </script>
+
 </body>
 </html>
