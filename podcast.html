@@ -564,8 +564,20 @@
   .cover-art.shaking .cover-logo {
     animation: eggShake 0.55s ease both;
   }
-  /* Progress ring around logo during long-press */
-  .cover-art { position: relative; }
+  .cover-logo {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: none;
+    pointer-events: none;
+  }
+  #wh-logo-wrap {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: none;
+    cursor: pointer;
+  }
   .egg-ring {
     position: absolute; inset: 0;
     border-radius: inherit;
@@ -1021,6 +1033,9 @@ document.addEventListener('click', () => {
     clearTimeout(timer);
     wrap.classList.remove('pressing');
   }
+
+  // Suppress native context menu (Android fallback)
+  wrap.addEventListener('contextmenu', e => e.preventDefault());
 
   // Touch (mobile)
   wrap.addEventListener('touchstart', e => { e.preventDefault(); startPress(); }, { passive: false });

@@ -120,13 +120,15 @@
   }
   .ov-divider { width: 1px; background: var(--border); align-self: stretch; }
   .ov-btn {
-    display: inline-flex; align-items: center; gap: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 4px;
     background: var(--green); color: #fff;
     font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800; font-size: 18px; letter-spacing: .08em;
+    font-weight: 900; font-size: 22px; letter-spacing: .08em;
     text-transform: uppercase; border: none; cursor: pointer;
-    padding: 14px 36px; border-radius: 999px;
+    width: 130px; height: 130px; border-radius: 50%;
     transition: background .2s, transform .15s;
+    box-shadow: 0 0 0 6px rgba(0,191,99,0.2), 0 0 32px rgba(0,191,99,0.15);
   }
   .ov-btn:hover { background: var(--green-dark); transform: translateY(-2px); }
   .ov-hint {
@@ -217,8 +219,8 @@
   </div>
 
   <button class="ov-btn" id="start-btn">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M3 2.5l10 5.5-10 5.5z"/></svg>
-    <span id="btn-label">Let's Go</span>
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M3 2.5l10 5.5-10 5.5z"/></svg>
+    <span id="btn-label">Game On</span>
   </button>
   <div class="ov-hint" id="ov-hint">SPACE or TAP to jump</div>
 </div>
@@ -263,13 +265,13 @@
     w: 36, h: 56,        // logical size — slimmer upright character
     vy: 0, jumping: false,
     jumpCount: 0,         // allow double-jump
-    JUMP_V: -11,
+    JUMP_V: -13,
     GRAVITY: 0.7,
     trackAnim: 0,         // rolling track frame
   };
 
   // ── OBSTACLES ────────────────────────────────────────────────
-  const TYPES = ['cone', 'tripod', 'drone', 'barrier', 'wheelbarrow', 'portaloo', 'supervisor', 'pizzas'];
+  const TYPES = ['cone', 'tripod', 'drone', 'barrier', 'wheelbarrow', 'portaloo', 'supervisor', 'dumptruck'];
   let obstacles = [];
 
   // ── DUST PARTICLES ───────────────────────────────────────────
@@ -309,7 +311,7 @@
   // ─────────────────────────────────────────────────────────────
   function startGame() {
     score = 0; frame = 0;
-    baseSpeed = GW * 0.006;
+    baseSpeed = GW * 0.007;
     speed = baseSpeed;
     BD.y = groundY - BD.h;
     BD.vy = 0; BD.jumping = false; BD.jumpCount = 0;
@@ -386,7 +388,7 @@
       wheelbarrow: { w: 44, h: 32 },
       portaloo:    { w: 36, h: 56 },
       supervisor:  { w: 40, h: 48 },
-      pizzas:      { w: 34, h: 44 },
+      dumptruck:   { w: 64, h: 38 },
     };
     const cfg = configs[type];
     const isFlying = type === 'drone';
@@ -797,41 +799,122 @@
     ctx.fillRect(x + w*0.25 + 2, base - h*0.35 + 10, 6, 1.5);
   }
 
-  function drawPizzas(x, y, w, h) {
+  function drawDumpTruck(x, y, w, h) {
     const base = y + h;
-    const cx = x + w/2;
-    // Stack of 4 pizza boxes
-    const boxH = 9;
-    const boxW = w;
-    const colors = ['#e8d5a3','#d4b896','#c9a87a','#b8976a'];
-    for (let i = 3; i >= 0; i--) {
-      const by = base - (4 - i) * (boxH + 1);
-      ctx.fillStyle = colors[i];
-      roundRect(ctx, x, by - boxH, boxW, boxH, 2); ctx.fill();
-      // Box edge
-      ctx.strokeStyle = 'rgba(0,0,0,0.15)'; ctx.lineWidth = 0.5;
-      ctx.beginPath(); ctx.rect(x, by - boxH, boxW, boxH); ctx.stroke();
-      // Pizza logo on top box
-      if (i === 0) {
-        ctx.fillStyle = '#CC2200';
-        ctx.beginPath(); ctx.arc(cx, by - boxH/2, 5, 0, Math.PI*2); ctx.fill();
-        ctx.fillStyle = '#FFD700'; ctx.font = `bold 6px sans-serif`; ctx.textAlign='center';
-        ctx.fillText('🍕', cx, by - boxH/2 + 2);
-        ctx.textAlign='left';
+    const cabW = w * 0.38;
+    const bedW = w * 0.58;
+    const cabH = h * 0.72;
+    const bedH = h * 0.52;
+    const cabX = x + bedW;
+    const bedX = x;
+
+    // ── SHADOW
+    ctx.fillStyle = 'rgba(0,0,0,0.2)';
+    ctx.beginPath();
+    ctx.ellipse(x + w*0.5, base + 3, w*0.44, 4, 0, 0, Math.PI*2);
+    ctx.fill();
+
+    // ── WHEELS
+    const wheelR = h * 0.22;
+    const wheelY = base - wheelR;
+    [[x + w*0.18, wheelY],[x + w*0.72, wheelY]].forEach(([wx,wy]) => {
+      // Tyre
+      ctx.fillStyle = '#1a1a1a';
+      ctx.beginPath(); ctx.arc(wx, wy, wheelR, 0, Math.PI*2); ctx.fill();
+      // Rim
+      ctx.fillStyle = '#888';
+      ctx.beginPath(); ctx.arc(wx, wy, wheelR*0.58, 0, Math.PI*2); ctx.fill();
+      // Hub
+      ctx.fillStyle = '#aaa';
+      ctx.beginPath(); ctx.arc(wx, wy, wheelR*0.22, 0, Math.PI*2); ctx.fill();
+      // Spokes
+      ctx.strokeStyle = '#777'; ctx.lineWidth = 1.5;
+      for (let i = 0; i < 5; i++) {
+        const a = (i / 5) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(wx + Math.cos(a)*wheelR*0.22, wy + Math.sin(a)*wheelR*0.22);
+        ctx.lineTo(wx + Math.cos(a)*wheelR*0.52, wy + Math.sin(a)*wheelR*0.52);
+        ctx.stroke();
       }
+    });
+
+    // ── DUMP BED (slightly raised at back — mid-tip look)
+    const bedBottom = base - wheelR * 1.8;
+    const bedTop    = bedBottom - bedH;
+    const tipLift   = h * 0.08; // back of bed slightly raised
+
+    ctx.fillStyle = '#F5A623';
+    ctx.beginPath();
+    ctx.moveTo(bedX,          bedBottom);
+    ctx.lineTo(bedX + bedW,   bedBottom);
+    ctx.lineTo(bedX + bedW,   bedTop - tipLift);
+    ctx.lineTo(bedX,          bedTop + tipLift);
+    ctx.closePath(); ctx.fill();
+
+    // Bed stripes / panels
+    ctx.strokeStyle = '#c47c00'; ctx.lineWidth = 1.2;
+    for (let i = 1; i < 3; i++) {
+      const px = bedX + (bedW / 3) * i;
+      ctx.beginPath();
+      ctx.moveTo(px, bedBottom);
+      ctx.lineTo(px, bedTop + tipLift - i * tipLift * 0.3);
+      ctx.stroke();
     }
-    // Delivery bag leaning against stack
-    ctx.fillStyle = '#CC2200';
-    roundRect(ctx, x - 10, base - h*0.7, 16, h*0.55, 3); ctx.fill();
+
+    // Dirt load in bed
+    ctx.fillStyle = '#6B4423';
+    ctx.beginPath();
+    ctx.moveTo(bedX + 4,        bedTop + tipLift + 3);
+    ctx.lineTo(bedX + bedW - 2, bedTop - tipLift + 3);
+    ctx.lineTo(bedX + bedW - 2, bedBottom - 4);
+    ctx.lineTo(bedX + 4,        bedBottom - 4);
+    ctx.closePath(); ctx.fill();
+    // Dirt surface bump
+    ctx.fillStyle = '#7a4f28';
+    ctx.beginPath();
+    ctx.ellipse(bedX + bedW*0.45, bedTop + tipLift*0.5 + 3, bedW*0.3, h*0.08, -0.15, 0, Math.PI*2);
+    ctx.fill();
+
+    // Tailgate
+    ctx.fillStyle = '#c47c00';
+    ctx.fillRect(bedX, bedTop + tipLift, 5, bedBottom - bedTop - tipLift);
+
+    // ── CAB
+    const cabBottom = base - wheelR * 1.8;
+    const cabTop    = cabBottom - cabH;
+
+    ctx.fillStyle = '#E8941A';
+    roundRect(ctx, cabX, cabTop, cabW, cabBottom - cabTop, 4);
+    ctx.fill();
+
+    // Cab highlight
+    ctx.fillStyle = 'rgba(255,255,255,0.07)';
+    ctx.fillRect(cabX + 3, cabTop + 3, cabW - 6, (cabBottom - cabTop) * 0.45);
+
+    // Windscreen
+    ctx.fillStyle = 'rgba(160,220,255,0.75)';
+    roundRect(ctx, cabX + 4, cabTop + 5, cabW - 8, cabH * 0.42, 3);
+    ctx.fill();
+    // Windscreen reflection
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.fillRect(cabX + 6, cabTop + 7, 4, cabH * 0.22);
+
+    // Exhaust stack
+    ctx.fillStyle = '#555';
+    ctx.fillRect(cabX + cabW*0.7, cabTop - 10, 5, 12);
+    // Puff
+    ctx.fillStyle = 'rgba(255,255,255,0.08)';
+    ctx.beginPath(); ctx.arc(cabX + cabW*0.7 + 2, cabTop - 12, 5, 0, Math.PI*2); ctx.fill();
+
+    // Headlight
     ctx.fillStyle = '#FFD700';
-    ctx.fillRect(x - 8, base - h*0.65, 12, 2);
-    ctx.fillRect(x - 8, base - h*0.58, 12, 2);
-    // Delivery note sticking out
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(cx - 4, y + 2, 10, 14);
-    ctx.fillStyle = '#aaa'; ctx.font = '5px sans-serif';
-    ctx.fillText('SITE', cx - 3, y + 8);
-    ctx.fillText('MGRS', cx - 3, y + 13);
+    ctx.beginPath();
+    ctx.arc(cabX + cabW - 4, cabBottom - h*0.32, 3.5, 0, Math.PI*2);
+    ctx.fill();
+
+    // ── CHASSIS bar
+    ctx.fillStyle = '#555';
+    ctx.fillRect(x, bedBottom, w, 4);
   }
   // ─────────────────────────────────────────────────────────────
   function collides(ob) {
@@ -999,7 +1082,7 @@
       else if (ob.type === 'wheelbarrow') drawWheelbarrow(ob.x, ob.y, ob.w, ob.h);
       else if (ob.type === 'portaloo')    drawPortaloo(ob.x, ob.y, ob.w, ob.h);
       else if (ob.type === 'supervisor')  drawSupervisor(ob.x, ob.y, ob.w, ob.h);
-      else if (ob.type === 'pizzas')      drawPizzas(ob.x, ob.y, ob.w, ob.h);
+      else if (ob.type === 'dumptruck')   drawDumpTruck(ob.x, ob.y, ob.w, ob.h);
     });
 
     // ── BULLDOZER ──
