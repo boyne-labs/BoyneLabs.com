@@ -306,6 +306,31 @@
     background: var(--green); margin-top: 7px;
   }
 
+  /* ── REVIEW ── */
+  .review-section {
+    padding: 72px 5%;
+    background: #1a1a1a;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+  .review-inner { max-width: 640px; margin: 0 auto; }
+  .review-stars {
+    font-size: 24px; color: #FFD700;
+    letter-spacing: 3px; margin-bottom: 20px;
+  }
+  .review-quote {
+    font-size: clamp(16px, 2vw, 20px);
+    font-style: italic; color: var(--text);
+    line-height: 1.7; margin-bottom: 20px;
+    font-weight: 600;
+  }
+  .review-attr {
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
   /* ── CTA ── */
   .cta-section {
     padding: 100px 5%; text-align: center;
@@ -713,6 +738,14 @@
 </section>
 
 <!-- ── CTA ── -->
+<section class="review-section">
+  <div class="review-inner">
+    <div class="review-stars">★★★★★</div>
+    <blockquote class="review-quote">"I used to have to manually keep track of my loads. Phone calls come in, trucks get out of order, lunch breaks happen and next thing you know you're wondering if you marked that last load or at the end of the day you're 1 load off from everyone else. Not anymore! Everything is timestamped so you can see when you load/unload, how long it took, drive times, literally all the information you could need! Best of all it happens automatically without thinking about it! So glad I found this app!"</blockquote>
+    <p class="review-attr">— App Store review · Eric, United States</p>
+  </div>
+</section>
+
 <section class="cta-section">
   <div class="cta-inner">
     <img src="DTT_Logo_locked.png" alt="Dump Truck Tracker" class="cta-logo">
