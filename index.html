@@ -449,6 +449,114 @@
     opacity: 0.5;
   }
 
+  /* ── BOTH SIDES ── */
+  .both-sides {
+    border-top: 1px solid var(--border);
+    padding: 72px 5%;
+    background: var(--charcoal);
+  }
+  .both-sides-inner {
+    max-width: 1040px; margin: 0 auto;
+  }
+  .bs-header {
+    margin-bottom: 56px;
+  }
+  .bs-columns {
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr;
+    align-items: center;
+    gap: 0;
+  }
+  .bs-col-heading {
+    display: flex; flex-direction: column; gap: 5px;
+    margin-bottom: 28px;
+  }
+  .bs-col-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: clamp(28px, 3.5vw, 44px);
+    text-transform: uppercase; letter-spacing: -0.01em;
+    line-height: 1; color: var(--text-primary);
+  }
+  .bs-col-sub {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-tertiary);
+  }
+  .bs-descriptors {
+    list-style: none; display: flex; flex-direction: column; gap: 12px;
+  }
+  .bs-descriptors li {
+    font-size: clamp(16px, 2vw, 20px);
+    color: var(--text-secondary);
+    font-weight: 600; line-height: 1.2;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .bs-col-left .bs-descriptors li::before {
+    content: ''; flex-shrink: 0;
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--green);
+  }
+  .bs-col-right .bs-descriptors li {
+    flex-direction: row-reverse; text-align: right;
+  }
+  .bs-col-right .bs-descriptors li::before {
+    content: ''; flex-shrink: 0;
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--green);
+  }
+  .bs-col-right {
+    text-align: right;
+  }
+  .bs-col-right .bs-col-heading {
+    align-items: flex-end;
+  }
+
+  /* Centre axis */
+  .bs-axis {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 0; align-self: stretch;
+  }
+  .bs-axis-line {
+    flex: 1; width: 1px;
+    background: var(--border-hover);
+    min-height: 40px;
+  }
+  .bs-axis-node {
+    padding: 12px 0;
+  }
+  .bs-axis-dots {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4px;
+  }
+  .bs-axis-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--green);
+  }
+
+  @media (max-width: 600px) {
+    .bs-columns { grid-template-columns: 1fr; gap: 40px; }
+    .bs-axis { flex-direction: row; align-self: auto; }
+    .bs-axis-line { flex: 1; width: auto; height: 1px; min-height: unset; }
+    .bs-axis-node { padding: 0 12px; }
+    .bs-col-right { text-align: left; }
+    .bs-col-right .bs-col-heading { align-items: flex-start; }
+    .bs-col-right .bs-descriptors li { flex-direction: row; text-align: left; }
+  }
+
+  .bs-cta {
+    margin-top: 52px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: center;
+  }
+  .bs-cta-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--green); color: #fff;
+    text-decoration: none; font-weight: 700; font-size: 15px;
+    padding: 14px 32px; border-radius: var(--radius-pill);
+    transition: background 0.2s, transform 0.15s;
+  }
+  .bs-cta-btn:hover { background: var(--green-dark); transform: translateY(-2px); }
+
   /* ── PODCAST TEASER ── */
   .podcast-teaser {
     border-top: 1px solid var(--border);
@@ -710,9 +818,9 @@
       <span></span><span></span><span></span>
     </button>
     <ul class="nav-links" id="nav-links">
-      <li><a href="index.html" class="active">Home</a></li>
-      <li><a href="podcast.html">Podcast</a></li>
-      <li><a href="dumptruck.html">App</a></li>
+      <li><a href="index.html" class="active">Advisory</a></li>
+      <li><a href="podcast.html">Media</a></li>
+      <li><a href="tech.html">Tech</a></li>
       <li class="nav-contact">
         <button class="nav-contact-btn" id="contact-btn" aria-expanded="false">
           Contact
@@ -748,14 +856,14 @@
         <div class="hero-rule"></div>
 
         <p class="hero-body">
-          Twenty years across construction and tech means we know what <strong>builders actually need</strong> — and what it takes for <strong>tech companies to earn their trust</strong>. Led by John Naughton, former CEO of GoContractor, former Head of On-Machine Products at Trimble, current Board Member at Presien.
+          Twenty years across construction and tech means we know what <strong>builders actually need</strong> — and what it takes for <strong>tech companies to earn their trust</strong>. Led by John Naughton, former CEO of GoContractor, former Head of On-Machine Products at Trimble, current CCO at Presien.
         </p>
         <p class="hero-who">We work with <strong>construction companies</strong> evaluating and implementing technology, and <strong>tech vendors</strong> entering or scaling within the construction and mining sector.</p>
 
         <div class="creds">
           <span class="cred-pill">CEO — GoContractor (acquired)</span>
           <span class="cred-pill">On-Machine Products — Trimble</span>
-          <span class="cred-pill">Board Member — Presien</span>
+          <span class="cred-pill">CCO — Presien</span>
           <span class="cred-pill">Brisbane, AU</span>
         </div>
 
@@ -832,6 +940,71 @@
       </div>
 
     </div>
+  </div>
+</section>
+
+<!-- ── BOTH SIDES ── -->
+<section class="both-sides">
+  <div class="both-sides-inner">
+
+    <div class="bs-header">
+      <p class="section-label">Where the knowledge comes from</p>
+      <h2 class="section-heading">Both sides<br>of the table.</h2>
+    </div>
+
+    <div class="bs-columns">
+
+      <!-- LEFT -->
+      <div class="bs-col bs-col-left">
+        <div class="bs-col-heading">
+          <span class="bs-col-title">Tech Supply</span>
+          <span class="bs-col-sub">Startups · OEMs · OTMs</span>
+        </div>
+        <ul class="bs-descriptors">
+          <li>Product roadmaps</li>
+          <li>Go-to-market</li>
+          <li>OXM integration</li>
+          <li>Revenue growth</li>
+        </ul>
+      </div>
+
+      <!-- CENTRE AXIS -->
+      <div class="bs-axis">
+        <div class="bs-axis-line"></div>
+        <div class="bs-axis-node">
+          <span class="bs-axis-dots">
+            <span class="bs-axis-dot"></span>
+            <span class="bs-axis-dot"></span>
+            <span class="bs-axis-dot"></span>
+            <span class="bs-axis-dot"></span>
+          </span>
+        </div>
+        <div class="bs-axis-line"></div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="bs-col bs-col-right">
+        <div class="bs-col-heading">
+          <span class="bs-col-title">Construction</span>
+          <span class="bs-col-sub">General &amp; Specialist</span>
+        </div>
+        <ul class="bs-descriptors">
+          <li>Project delivery</li>
+          <li>Procurement</li>
+          <li>Site operations</li>
+          <li>Technology adoption</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="bs-cta">
+      <a href="mailto:hello@boynelabs.com" class="bs-cta-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Get in touch
+      </a>
+    </div>
+
   </div>
 </section>
 
